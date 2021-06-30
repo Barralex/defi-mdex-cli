@@ -18,12 +18,10 @@ const deposit = async () => {
   const spinner = ora("Getting MDX Balance").start();
 
   const currentMdxBalance = await getBalance();
+  const currentBalanceToEther = Web3.utils.fromWei(currentMdxBalance, "ether");
 
-  if (currentMdxBalance > 0) {
-    spinner.text = `Depositing ${Web3.utils.fromWei(
-      currentMdxBalance,
-      "ether"
-    )} MDX`;
+  if (currentBalanceToEther >= 0.001) {
+    spinner.text = `Depositing ${currentBalanceToEther} MDX`;
 
     let receiptObject = await sendTokenOperation({
       amount: currentMdxBalance,
@@ -36,7 +34,10 @@ const deposit = async () => {
     confirmTxHash(receiptObject);
   } else {
     spinner.stop();
-    print("danger", "🚨 MDX balance in your address must be greather than 0");
+    print(
+      "danger",
+      "🚨 MDX balance in your address must be greather than 0.001"
+    );
   }
 };
 
@@ -61,7 +62,7 @@ const withdraw = async () => {
   const mdxPendingRewards = await getMdxPendingReward();
   const rewardsToEther = Web3.utils.fromWei(mdxPendingRewards, "ether");
 
-  if (!(rewardsToEther > 0.001)) {
+  if (!(rewardsToEther >= 0.001)) {
     spinner.stop();
     print("danger", `The MDX rewards are too low!`);
     return;
@@ -103,10 +104,7 @@ const validateConfig = () => {
 
 module.exports = async (args) => {
   let cmd = "";
-  // await confirmTxHash(
-  //   "0xef1df0114e1f55dc7be310b4fcd9c9c1cee62cfd5ba3c7b8d4cadbdcb7418601"
-  // );
-  // return;
+
   if (args.deposit || args.d) {
     cmd = "deposit";
   }
