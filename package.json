@@ -1,0 +1,21 @@
+{
+  "name": "mdex_pool_boot",
+  "version": "1.0.0",
+  "description": "DEFI Bot to manage http://mdex.com pool staking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "defi": "bin/defi"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "ethereumjs-tx": "^2.1.2",
+    "minimist": "^1.2.5",
+    "ora": "^5.4.1",
+    "web3": "^1.3.6"
+  }
+}
