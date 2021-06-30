@@ -32,7 +32,7 @@ Private key should be copied without the "0x".
 
 ## Disclaimer
 
-🚨&nbsp;Storing private keys on any internet connected device is basically insecure. This is an educational project to learn how [ERC20(https://eips.ethereum.org/EIPS/eip-20) standard blockchain contracts works.&nbsp;🚨
+🚨&nbsp;Storing private keys on any internet connected device is basically insecure. This is an educational project to learn how [ERC20](https://eips.ethereum.org/EIPS/eip-20) standard blockchain contracts works.&nbsp;🚨
 
 ## Acknowledgments
 
