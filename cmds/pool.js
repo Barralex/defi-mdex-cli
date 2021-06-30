@@ -25,14 +25,15 @@ const deposit = async () => {
       "ether"
     )} MDX`;
 
-    let txHash = await sendTokenOperation({
+    let receiptObject = await sendTokenOperation({
       amount: currentMdxBalance,
       type: "deposit",
     });
 
     spinner.stop();
 
-    await confirmTxHash(txHash);
+    print("subtitle", "      Deposit transaction sent.");
+    confirmTxHash(receiptObject);
   } else {
     spinner.stop();
     print("danger", "🚨 MDX balance in your address must be greather than 0");
@@ -68,30 +69,26 @@ const withdraw = async () => {
 
   spinner.text = `Withdrawing ${rewardsToEther} MDX`;
 
-  let txHash = await sendTokenOperation({
+  let receiptObject = await sendTokenOperation({
     amount: mdxPendingRewards,
     type: "withdraw",
   });
 
-  await confirmTxHash(txHash);
+  print("subtitle", "      Withdraw transaction sent.");
+
+  confirmTxHash(receiptObject);
 };
 
-const confirmTxHash = async (txHash) => {
-  const spinner = ora(`Confirming TxHash ${txHash}`).start();
-
-  const status = await isTransactionConfirmed({
-    txHash: txHash,
-    waitingTime: defaultWaitingTime,
-  });
-
-  spinner.stop();
-
-  if (status) {
-    print("success", `      Tx status: ✅ https://hecoinfo.com/tx/${txHash}`);
+const confirmTxHash = async (receiptObject) => {
+  if (receiptObject.status) {
+    print(
+      "subtitle",
+      `      Tx status: ✅ https://hecoinfo.com/tx/${receiptObject.transactionHash}`
+    );
   } else {
     print(
-      "danger",
-      `      Tx status: ❌ https://hecoinfo.com/tx/${txHash} . Check Tx to see the issue.`
+      "subtitle",
+      `      Tx status: ❌ https://hecoinfo.com/tx/${receiptObject.transactionHash} . Check Tx to see the issue.`
     );
   }
 };
@@ -106,7 +103,10 @@ const validateConfig = () => {
 
 module.exports = async (args) => {
   let cmd = "";
-
+  // await confirmTxHash(
+  //   "0xef1df0114e1f55dc7be310b4fcd9c9c1cee62cfd5ba3c7b8d4cadbdcb7418601"
+  // );
+  // return;
   if (args.deposit || args.d) {
     cmd = "deposit";
   }

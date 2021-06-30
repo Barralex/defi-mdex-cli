@@ -8,8 +8,9 @@ const sleep = (ms) => {
 };
 
 const isTransactionConfirmed = async ({ txHash, waitingTime }) => {
+  const web3 = new Web3(rpcURL);
   await sleep(waitingTime);
-  const result = Web3.eth.getTransactionReceipt(txHash);
+  const result = web3.eth.getTransactionReceipt(txHash);
   if (!result) {
     return false;
   }

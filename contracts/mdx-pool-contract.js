@@ -351,7 +351,7 @@ const sendTokenOperation = async ({ amount, type }) => {
       ? contract.methods.deposit(0, amount).encodeABI()
       : contract.methods.withdraw(0, amount).encodeABI();
 
-  const multiplier = type === "deposit" ? 1.5 : 1;
+  const multiplier = 2;
 
   let txObject = {
     from: wallet.address,
@@ -375,8 +375,8 @@ const sendTokenOperation = async ({ amount, type }) => {
   const serializedTx = tx.serialize();
   const raw = "0x" + serializedTx.toString("hex");
 
-  const txHash = await web3.eth.sendSignedTransaction(raw);
-  return txHash;
+  const receiptObject = await web3.eth.sendSignedTransaction(raw);
+  return receiptObject;
 };
 
 exports.getMdxPendingReward = getMdxPendingReward;
