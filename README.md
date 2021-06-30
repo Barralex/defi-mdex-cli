@@ -26,7 +26,9 @@ First time running the CLI, it's a nice idea to create a new wallet and no re us
 $ defi address --create
 ```
 
-This will return an [HECO](https://m.hecochain.com/) address and private key. Copy, go to config.js file and paste there.
+This will return an [HECO](https://m.hecochain.com/) address and private key. Copy, go to config.js file and paste there. 
+
+Private key should be copied without the "0x".
 
 ## Acknowledgments
 
