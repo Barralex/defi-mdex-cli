@@ -96,6 +96,14 @@ const confirmTxHash = async (txHash) => {
   }
 };
 
+const validateConfig = () => {
+  return (
+    wallet.address !== "" &&
+    wallet.privateKey !== "" &&
+    wallet.privateKey.substr(0, 2) !== "0x"
+  );
+};
+
 module.exports = async (args) => {
   let cmd = "";
 
@@ -109,6 +117,14 @@ module.exports = async (args) => {
 
   if (args.analytics || args.a) {
     cmd = "analytics";
+  }
+
+  if (!validateConfig()) {
+    print(
+      "danger",
+      `🚨 Config an HECO address first on config file or remove the 0x part on private key`
+    );
+    return;
   }
 
   try {
