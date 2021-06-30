@@ -75,6 +75,8 @@ const withdraw = async () => {
     type: "withdraw",
   });
 
+  spinner.stop();
+
   print("subtitle", "      Withdraw transaction sent.");
 
   confirmTxHash(receiptObject);
