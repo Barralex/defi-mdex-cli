@@ -30,6 +30,10 @@ This will return an [HECO](https://m.hecochain.com/) address and private key. Co
 
 Private key should be copied without the "0x".
 
+## Disclaimer
+
+👉 Storing private keys on any internet connected device is basically insecure. This is an educational project to learn how [ERC20(https://eips.ethereum.org/EIPS/eip-20) standard blockchain contracts works. 
+
 ## Acknowledgments
 
 * [Node-CLI-Tutorial](https://timber.io/blog/creating-a-real-world-cli-app-with-node/)
