@@ -10,7 +10,7 @@ const { print } = require("./utils/console-colors");
 
 const error = require("./utils/error");
 
-module.exports = () => {
+module.exports = async () => {
   const args = minimist(process.argv.slice(2));
 
   let cmd = args._[0] || "help";

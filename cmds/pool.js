@@ -1,6 +1,7 @@
 const ora = require("ora");
 const Web3 = require("web3");
-const { wallet, defaultWaitingTime } = require("../config");
+const { wallet, defaultWaitingTime, telegramConfig } = require("../config");
+
 const error = require("../utils/error");
 const { print } = require("../utils/console-colors");
 
@@ -13,6 +14,8 @@ const {
 } = require("../contracts/mdx-pool-contract");
 
 const { getHTBalance, isTransactionConfirmed } = require("../utils/web3-utils");
+
+const { telegrambot, ACTIONS } = require("../utils/telegram-bot");
 
 const deposit = async () => {
   const spinner = ora("Getting MDX Balance").start();
@@ -32,11 +35,23 @@ const deposit = async () => {
 
     print("subtitle", "      Deposit transaction sent.");
     confirmTxHash(receiptObject);
+
+    if (telegramConfig.active) {
+      const htBalance = await getHTBalance();
+
+      await telegrambot(ACTIONS.DEPOSIT,
+        `\n
+<b>Amount</b>:  ${currentMdxBalance} MDX
+<b>Tx</b>: <a href="https://hecoinfo.com/tx/${receiptObject.transactionHash}">Heco explorer</a>
+<b>Gas Left</b>:  ${Web3.utils.fromWei(htBalance, "ether")} HT`
+      );
+    }
   } else {
     spinner.stop();
+    print("subtitle", `Found ${currentBalanceToEther} MDX.`);
     print(
       "danger",
-      "🚨 MDX balance in your address must be greather than 0.001"
+      "🚨 MDX balance in your address must be greather than 0.001."
     );
   }
 };
@@ -64,7 +79,8 @@ const withdraw = async () => {
 
   if (!(rewardsToEther >= 0.001)) {
     spinner.stop();
-    print("danger", `The MDX rewards are too low!`);
+    print("subtitle", `Found ${rewardsToEther} MDX.`);
+    print("danger", `🚨 Your rewards must be greather than 0.001`);
     return;
   }
 
@@ -80,6 +96,17 @@ const withdraw = async () => {
   print("subtitle", "      Withdraw transaction sent.");
 
   confirmTxHash(receiptObject);
+
+  if (telegramConfig.active) {
+    const htBalance = await getHTBalance();
+
+    await telegrambot(ACTIONS.WITHDRAW,
+      `\n
+<b>Amount</b>:  ${mdxPendingRewards} MDX
+<b>Tx</b>: <a href="https://hecoinfo.com/tx/${receiptObject.transactionHash}">Heco explorer</a>
+<b>Gas Left</b>:  ${Web3.utils.fromWei(htBalance, "ether")} HT`
+    );
+  }
 };
 
 const confirmTxHash = async (receiptObject) => {
