@@ -104,6 +104,11 @@ const validateConfig = () => {
   );
 };
 
+const reinvest = async () => {
+  await withdraw();
+  await deposit();
+};
+
 module.exports = async (args) => {
   let cmd = "";
 
@@ -117,6 +122,10 @@ module.exports = async (args) => {
 
   if (args.analytics || args.a) {
     cmd = "analytics";
+  }
+
+  if (args.reinvest || args.r) {
+    cmd = "reinvest";
   }
 
   if (!validateConfig()) {
@@ -139,6 +148,10 @@ module.exports = async (args) => {
 
       case "withdraw":
         await withdraw();
+        break;
+
+      case "reinvest":
+        await reinvest();
         break;
 
       default:

@@ -19,7 +19,8 @@ const menus = {
   
       --deposit <amount>, -d <amount>      ............... Deposit MDX token into pool
       --withdraw <amount>, -w  <amount>    ............... Withdraw MDX from pool
-      --analytics, -a                      ............... Get MDX total staked and pending rewards`,
+      --analytics, -a                      ............... Get MDX total staked and pending rewards
+      --reinvest, -r                       ............... Perform withdraw and deposit events`,
 };
 
 module.exports = (args) => {
