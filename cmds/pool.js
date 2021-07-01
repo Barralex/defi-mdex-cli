@@ -186,6 +186,8 @@ module.exports = async (args) => {
         break;
     }
   } catch (e) {
+    if (telegramConfig.active) await telegrambot(ACTIONS.ERROR,`\n
+<b>Reason</b>:  ${e.message}`)
     error(`An error has ocurred: ${e.message}`, "danger", true);
   }
 };

@@ -21,7 +21,8 @@ const telegrambot = async (message, body) => {
 
 const ACTIONS = {
   DEPOSIT: "⬆️ New MDX Deposit",
-  WITHDRAW: "⬇️  New MDX Withdraw",
+  WITHDRAW: "⬇️ New MDX Withdraw",
+  ERROR: "🚨 Execution Error",
 };
 
 module.exports = {
