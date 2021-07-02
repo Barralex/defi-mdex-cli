@@ -30,6 +30,28 @@ This will return an [HECO](https://m.hecochain.com/) address and private key. Co
 
 Private key should be copied without the "0x".
 
+### Telegram push notifications
+
+The next methods can trigger notifications through a telegram bot.
+
+```
+$ defi pool --reinvest
+```
+```
+$ defi pool --deposit
+```
+```
+$ defi pool --withdraw
+```
+
+To configure the bot follow the next steps:
+
+* Create a new [Telegram Bot](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-telegram?view=azure-bot-service-4.0) and save the HTTP Token.
+* Install the bot on your telegram application. 
+* Get your chatID with this [bot](https://telegram.me/getidsbot).
+* Into the config.js file set active to true and save the token and chatId values.
+
+
 ## Disclaimer
 
 🚨&nbsp;Storing private keys on any internet connected device is basically insecure. This is an educational project to learn how [ERC20](https://eips.ethereum.org/EIPS/eip-20) based blockchain contracts works.&nbsp;🚨
