@@ -21,7 +21,9 @@ const deposit = async () => {
   const spinner = ora("Getting MDX Balance").start();
 
   const currentMdxBalance = await getBalance();
-  const currentBalanceToEther = Number(Web3.utils.fromWei(currentMdxBalance, "ether")).toFixed(3);
+  const currentBalanceToEther = Number(
+    Web3.utils.fromWei(currentMdxBalance, "ether")
+  ).toFixed(3);
 
   if (currentBalanceToEther >= 0.001) {
     spinner.text = `Depositing ${currentBalanceToEther} MDX`;
@@ -38,10 +40,15 @@ const deposit = async () => {
 
     if (telegramConfig.active) {
       const htBalance = await getHTBalance(wallet.address);
+      const mdxInPool = Number(
+        Web3.utils.fromWei(await getMdxInPool(), "ether")
+      ).toFixed(3);
 
-      await telegrambot(ACTIONS.DEPOSIT,
+      await telegrambot(
+        ACTIONS.DEPOSIT,
         `\n
 <b>Amount</b>:  ${currentBalanceToEther} MDX
+<b>Staked</b>: ${mdxInPool} MDX
 <b>Tx</b>: <a href="https://hecoinfo.com/tx/${receiptObject.transactionHash}">Heco explorer</a>
 <b>Gas Left</b>:  ${Web3.utils.fromWei(htBalance, "ether")} HT`
       );
@@ -75,7 +82,9 @@ const withdraw = async () => {
   const spinner = ora("Getting pool MDX pending rewards").start();
 
   const mdxPendingRewards = await getMdxPendingReward();
-  const rewardsToEther = Number(Web3.utils.fromWei(mdxPendingRewards, "ether")).toFixed(3);
+  const rewardsToEther = Number(
+    Web3.utils.fromWei(mdxPendingRewards, "ether")
+  ).toFixed(3);
 
   if (!(rewardsToEther >= 0.001)) {
     spinner.stop();
@@ -87,7 +96,7 @@ const withdraw = async () => {
   spinner.text = `Withdrawing ${rewardsToEther} MDX`;
 
   let receiptObject = await sendTokenOperation({
-    amount: mdxPendingRewards,
+    amount: 0,
     type: "withdraw",
   });
 
@@ -100,7 +109,8 @@ const withdraw = async () => {
   if (telegramConfig.active) {
     const htBalance = await getHTBalance(wallet.address);
 
-    await telegrambot(ACTIONS.WITHDRAW,
+    await telegrambot(
+      ACTIONS.WITHDRAW,
       `\n
 <b>Amount</b>:  ${rewardsToEther} MDX
 <b>Tx</b>: <a href="https://hecoinfo.com/tx/${receiptObject.transactionHash}">Heco explorer</a>
@@ -186,8 +196,12 @@ module.exports = async (args) => {
         break;
     }
   } catch (e) {
-    if (telegramConfig.active) await telegrambot(ACTIONS.ERROR,`\n
-<b>Reason</b>:  ${e.message}`)
+    if (telegramConfig.active)
+      await telegrambot(
+        ACTIONS.ERROR,
+        `\n
+<b>Reason</b>:  ${e.message}`
+      );
     error(`An error has ocurred: ${e.message}`, "danger", true);
   }
 };
